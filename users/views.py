@@ -3,7 +3,8 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 
-from .serializers import RegisterSerializer, LoginSerializer
+from .models import Profile
+from .serializers import RegisterSerializer, LoginSerializer, ProfileSerializer
 
 # Create your views here.
 
@@ -21,3 +22,7 @@ class LoginView(generics.GenericAPIView):
             token, created = Token.objects.get_or_create(user=user)
             return Response({"token": token.key}, status=status.HTTP_200_OK)
         return Response({"error": "Unable to log in with provided credentials. "})
+
+class ProfileView(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
